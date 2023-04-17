@@ -15,6 +15,17 @@ class App extends React.Component {
     loginBtnDisabled: true,
     carregando: false,
     logado: false,
+    searchBtnDisabled: true,
+    artistSearch: '',
+  };
+
+  searchValidation = () => {
+    const { artistSearch } = this.state;
+    const artistVal = artistSearch.length >= 2;
+
+    this.setState({
+      searchBtnDisabled: !(artistVal),
+    });
   };
 
   // função que, ao clicar no botão entrar, apareça uma mensagem de "carregando" e, ao terminar de rodar a API, redirecionar para o /search
@@ -43,6 +54,12 @@ class App extends React.Component {
     });
   };
 
+  // this handles every validation inside the onInputChange function
+  validations = () => {
+    this.loginValidation();
+    this.searchValidation();
+  };
+
   // eventHandler genérico
   onInputChange = ({ target }) => {
     const { name } = target;
@@ -50,11 +67,12 @@ class App extends React.Component {
 
     this.setState({
       [name]: value,
-    }, this.loginValidation);
+    }, this.validations);
   };
 
   render() {
-    const { userName, loginBtnDisabled, logado, carregando } = this.state;
+    const { userName, loginBtnDisabled, logado, carregando,
+      searchBtnDisabled, artistSearch } = this.state;
     return (
       <main>
         <Switch>
@@ -86,8 +104,10 @@ class App extends React.Component {
               (props) => (
                 <Search
                   { ...props }
-                  carregando={ carregando }
-                  recUserName={ this.recUserName }
+                  artistSearch={ artistSearch }
+                  onInputChange={ this.onInputChange }
+                  searchBtnDisabled={ searchBtnDisabled }
+                  searchValidation={ this.searchValidation }
                 />)
             }
           />
