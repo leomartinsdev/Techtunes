@@ -17,6 +17,7 @@ class App extends React.Component {
     logado: false,
   };
 
+  // função que, ao clicar no botão entrar, apareça uma mensagem de "carregando" e, ao terminar de rodar a API, redirecionar para o /search
   handleEnterButton = async (event, userName) => {
     event.preventDefault();
     this.setState({
@@ -31,6 +32,7 @@ class App extends React.Component {
     });
   };
 
+  // function that validates the login. If the name input doesn't have a length of >= 3, the Enter button will be disabled
   loginValidation = () => {
     const { userName } = this.state;
     const minNameReq = 3;
@@ -41,6 +43,7 @@ class App extends React.Component {
     });
   };
 
+  // eventHandler genérico
   onInputChange = ({ target }) => {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -76,7 +79,19 @@ class App extends React.Component {
             )}
           </Route>
 
-          <Route exact path="/search" component={ Search } />
+          <Route
+            exact
+            path="/search"
+            render={
+              (props) => (
+                <Search
+                  { ...props }
+                  carregando={ carregando }
+                  recUserName={ this.recUserName }
+                />)
+            }
+          />
+
           <Route exact path="/album/:id" component={ Album } />
           <Route exact path="/favorites" component={ Favorites } />
           <Route exact path="/profile" component={ Profile } />
