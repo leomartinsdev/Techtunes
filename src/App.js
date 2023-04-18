@@ -15,17 +15,6 @@ class App extends React.Component {
     loginBtnDisabled: true,
     carregando: false,
     logado: false,
-    searchBtnDisabled: true,
-    artistSearch: '',
-  };
-
-  searchValidation = () => {
-    const { artistSearch } = this.state;
-    const artistVal = artistSearch.length >= 2;
-
-    this.setState({
-      searchBtnDisabled: !(artistVal),
-    });
   };
 
   // função que, ao clicar no botão entrar, apareça uma mensagem de "carregando" e, ao terminar de rodar a API, redirecionar para o /search
@@ -36,7 +25,6 @@ class App extends React.Component {
     });
     const captura = await createUser({ name: userName });
     console.log(captura);
-    console.log('aqui acontece o redirect');
     this.setState({
       carregando: false,
       logado: true,
@@ -57,10 +45,9 @@ class App extends React.Component {
   // this handles every validation inside the onInputChange function
   validations = () => {
     this.loginValidation();
-    this.searchValidation();
   };
 
-  // eventHandler genérico
+  // generic event handler.
   onInputChange = ({ target }) => {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -71,8 +58,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { userName, loginBtnDisabled, logado, carregando,
-      searchBtnDisabled, artistSearch } = this.state;
+    const { userName, loginBtnDisabled, logado, carregando } = this.state;
     return (
       <main>
         <Switch>
@@ -104,10 +90,6 @@ class App extends React.Component {
               (props) => (
                 <Search
                   { ...props }
-                  artistSearch={ artistSearch }
-                  onInputChange={ this.onInputChange }
-                  searchBtnDisabled={ searchBtnDisabled }
-                  searchValidation={ this.searchValidation }
                 />)
             }
           />
