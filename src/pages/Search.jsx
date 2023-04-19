@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import Loading from '../components/Loading';
@@ -11,18 +12,8 @@ export default class Search extends Component {
     isLoading: false,
     artistResultView: false,
     artistHeaderName: '',
+    albumsList: [],
   };
-
-  // async componentDidMount(artistSearch) {
-  //   this.setState({
-  //     isLoading: true,
-  //   });
-  //   const albumInfo = await this.handleSearchBtn(artistSearch);
-  //   // this.setState({
-  //   //   isLoading: false,
-  //   // });
-  //   console.log(albumInfo);
-  // }
 
   // This function handles what happens when you click the Search button.
   handleSearchBtn = async (artistSearch) => {
@@ -35,8 +26,9 @@ export default class Search extends Component {
     this.setState({
       isLoading: false,
       artistResultView: true,
+      albumsList: recoverAlbumInfo,
     });
-    return console.log(recoverAlbumInfo);
+    return recoverAlbumInfo;
   };
 
   // This validates that the Search button will be disabled unless you type 2 or more chars in the search bar.
@@ -61,7 +53,7 @@ export default class Search extends Component {
 
   render() {
     const { searchBtnDisabled, artistSearch, isLoading, artistResultView,
-      artistHeaderName } = this.state;
+      artistHeaderName, albumsList } = this.state;
     return (
       <div data-testid="page-search">
         <Header />
@@ -86,19 +78,39 @@ export default class Search extends Component {
         </form>
         { artistResultView
           ? (
-            <p>
-              Resultado de álbuns de:
-              {' '}
-              {artistHeaderName}
-            </p>
+            <>
+              <p>
+                Resultado de álbuns de:
+                {' '}
+                {artistHeaderName}
+              </p>
+              <div>
+                {albumsList.map((element) => (
+                  <Link
+                    key={ element.artistName }
+                    to={ `/album/${element.collectionId}` }
+                    data-testid={ `link-to-album-${element.collectionId}` }
+                  >
+                    <img
+                      key={ element.artistName }
+                      src={ element.artworkUrl100 }
+                      alt={ element.artistName }
+                    />
+                    <p key={ element.artistName }>
+                      { element.collectionName }
+                    </p>
+                    <p key={ element.artistName }>
+                      { element.artistName }
+                    </p>
+                  </Link>))}
+              </div>
+            </>
           )
           : '' }
-        { isLoading
-          ? (
-            <div>
-              <Loading />
-            </div>)
-          : '' }
+
+        { artistResultView && albumsList.length === 0 && 'Nenhum álbum foi encontrado' }
+
+        { isLoading && <Loading /> }
       </div>
     );
   }
