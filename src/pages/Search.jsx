@@ -77,7 +77,7 @@ export default class Search extends Component {
           </button>
         </form>
         { artistResultView
-          ? (
+          && (
             <>
               <p>
                 Resultado de álbuns de:
@@ -105,8 +105,7 @@ export default class Search extends Component {
                   </Link>))}
               </div>
             </>
-          )
-          : '' }
+          ) }
 
         { artistResultView && albumsList.length === 0 && 'Nenhum álbum foi encontrado' }
 
