@@ -6,18 +6,9 @@ import Loading from './Loading';
 export default class MusicCard extends Component {
   state = {
     favoriteLoading: false,
+    listOfFavoritedSongs: [],
     isFavorite: false,
   };
-
-  // async componentDidUpdate() {
-  //   console.log('Esperando update da API');
-  //   const runHandleFavCheckbox = await this.handleFavCheckbox();
-  //   console.log(runHandleFavCheckbox);
-  //   console.log('Rodou a API');
-  //   this.setState({
-  //     favoriteLoading: false,
-  //   });
-  // }
 
   onInputChange = ({ target }) => {
     const { name } = target;
@@ -28,19 +19,30 @@ export default class MusicCard extends Component {
     });
   };
 
+  checkedValidation = (nomeDaMusicaAtual) => {
+    const { listOfFavoritedSongs } = this.state;
+    const check = listOfFavoritedSongs.includes(nomeDaMusicaAtual);
+    this.setState({
+      isFavorite: check,
+    });
+  };
+
   handleFavCheckbox = async (element) => {
+    const nomeDaMusicaAtual = element.trackName;
     this.setState({
       favoriteLoading: true,
-      isFavorite: true,
+
     });
-    console.log(element);
-    console.log('Mudou estado para loading');
+    this.setState((prevState) => ({
+      listOfFavoritedSongs: [...prevState.listOfFavoritedSongs, nomeDaMusicaAtual],
+    }), this.checkedValidation(nomeDaMusicaAtual));
+
     const addToFavListAPI = await addSong(element);
-    console.log('rodou api');
+
     this.setState({
       favoriteLoading: false,
     });
-    console.log('mudou estado para false loading');
+
     return addToFavListAPI;
   };
 
@@ -54,7 +56,7 @@ export default class MusicCard extends Component {
           : (
             <div>
               {songsList.map((element, index) => index > 0 && (
-                <div key={ element.index }>
+                <div key={ element.trackName }>
                   <span key={ element.index }>{element.trackName}</span>
                   <audio
                     data-testid="audio-component"
@@ -68,10 +70,10 @@ export default class MusicCard extends Component {
                     <code>audio</code>
                     .
                   </audio>
-                  <label key={ element.index } htmlFor="isFavorite">
+                  <label key={ element.trackName } htmlFor="isFavorite">
                     Favorita
                     <input
-                      key={ element.index }
+                      key={ element.trackName }
                       type="checkbox"
                       name="isFavorite"
                       id="isFavorite"
@@ -85,32 +87,6 @@ export default class MusicCard extends Component {
               ))}
             </div>)}
       </div>
-      // <div>
-      //   {songsList.map((element, index) => index > 0 && (
-      //     <div key={ element.index }>
-      //       <span key={ element.index }>{element.trackName}</span>
-      //       <audio data-testid="audio-component" src={ element.previewUrl } controls>
-      //         <track kind="captions" />
-      //         O seu navegador não suporta o elemento
-      //         {' '}
-      //         {' '}
-      //         <code>audio</code>
-      //         .
-      //       </audio>
-      //       <label key={ element.index } htmlFor="isFavorite">
-      //         Favorita
-      //         <input
-      //           key={ element.index }
-      //           type="checkbox"
-      //           name="isFavorite"
-      //           id="isFavorite"
-      //           data-testid={ `checkbox-music-${element.trackId}` }
-      //           onClick={ () => this.handleFavCheckbox(element) }
-      //         />
-      //       </label>
-      //     </div>
-      //   ))}
-      // </div>
     );
   }
 }
