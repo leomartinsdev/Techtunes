@@ -6,6 +6,7 @@ import Loading from './Loading';
 export default class MusicCard extends Component {
   state = {
     favoriteLoading: false,
+    isFavorite: false,
   };
 
   // async componentDidUpdate() {
@@ -18,9 +19,19 @@ export default class MusicCard extends Component {
   //   });
   // }
 
+  onInputChange = ({ target }) => {
+    const { name } = target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+
+    this.setState({
+      [name]: value,
+    });
+  };
+
   handleFavCheckbox = async (element) => {
     this.setState({
       favoriteLoading: true,
+      isFavorite: true,
     });
     console.log(element);
     console.log('Mudou estado para loading');
@@ -34,7 +45,7 @@ export default class MusicCard extends Component {
   };
 
   render() {
-    const { favoriteLoading } = this.state;
+    const { favoriteLoading, isFavorite } = this.state;
     const { songsList } = this.props;
     return (
       <div>
@@ -64,6 +75,8 @@ export default class MusicCard extends Component {
                       type="checkbox"
                       name="isFavorite"
                       id="isFavorite"
+                      onChange={ this.onInputChange }
+                      checked={ isFavorite }
                       data-testid={ `checkbox-music-${element.trackId}` }
                       onClick={ () => this.handleFavCheckbox(element) }
                     />
