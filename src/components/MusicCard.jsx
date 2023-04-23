@@ -6,29 +6,28 @@ import Loading from './Loading';
 export default class MusicCard extends Component {
   state = {
     favoriteLoading: false,
-    listOfFavoritedSongs: [],
+    isFavorite: false,
   };
 
-  onInputChange = ({ target }) => {
-    const { name } = target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+  componentDidMount() {
+    const { favSongs, allSongInfo } = this.props;
+    const favSongsIdsArr = favSongs.map(({ trackId }) => trackId); // aqui eu salvo os IDs das músicas favoritas
+    if (favSongsIdsArr.includes(allSongInfo.trackId)) { // aqui eu verifico se o trackId da música atual está dentro do array de músicas favoritas
+      this.setState({
+        isFavorite: true, // se a condição acima for verdadeira, altera o checked para true.
+      });
+    }
+  }
 
-    this.setState({
-      [name]: value,
-    });
-  };
+  handleFavCheckbox = async ({ target: { checked } }) => {
+    const allSongInfo = this.props;
 
-  handleFavCheckbox = async (element) => {
-    const nomeDaMusicaAtual = element.trackName;
     this.setState({
       favoriteLoading: true,
-
+      isFavorite: checked,
     });
-    this.setState((prevState) => ({
-      listOfFavoritedSongs: [...prevState.listOfFavoritedSongs, nomeDaMusicaAtual],
-    }));
 
-    const addToFavListAPI = await addSong(element);
+    const addToFavListAPI = await addSong(allSongInfo);
 
     this.setState({
       favoriteLoading: false,
@@ -38,45 +37,40 @@ export default class MusicCard extends Component {
   };
 
   render() {
-    const { favoriteLoading, listOfFavoritedSongs } = this.state;
-    const { songsList } = this.props;
+    const { favoriteLoading, isFavorite } = this.state;
+    const { previewUrl, trackName, trackId } = this.props;
     return (
       <div>
         { favoriteLoading
           ? <Loading />
           : (
             <div>
-              {songsList.map((element, index) => index > 0 && (
-                <div key={ element.trackName }>
-                  <span key={ element.index }>{element.trackName}</span>
-                  <audio
-                    data-testid="audio-component"
-                    src={ element.previewUrl }
-                    controls
-                  >
-                    <track kind="captions" />
-                    O seu navegador não suporta o elemento
-                    {' '}
-                    {' '}
-                    <code>audio</code>
-                    .
-                  </audio>
-                  <label key={ element.trackName } htmlFor="isFavorite">
-                    Favorita
-                    <input
-                      key={ element.trackName }
-                      type="checkbox"
-                      name="isFavorite"
-                      id="isFavorite"
-                      onChange={ this.onInputChange }
-                      checked={ listOfFavoritedSongs.includes(element.trackName) }
-                      data-testid={ `checkbox-music-${element.trackId}` }
-                      onClick={ () => this.handleFavCheckbox(element) }
-                    />
-                  </label>
-                </div>
-              ))}
-            </div>)}
+              <span>{ trackName }</span>
+              <audio
+                data-testid="audio-component"
+                src={ previewUrl }
+                controls
+              >
+                <track kind="captions" />
+                O seu navegador não suporta o elemento
+                {' '}
+                {' '}
+                <code>audio</code>
+                .
+              </audio>
+              <label htmlFor="isFavorite">
+                Favorita
+                <input
+                  type="checkbox"
+                  name={ trackId }
+                  id={ trackId }
+                  checked={ isFavorite }
+                  data-testid={ `checkbox-music-${trackId}` }
+                  onChange={ this.handleFavCheckbox }
+                />
+              </label>
+            </div>
+          )}
       </div>
     );
   }

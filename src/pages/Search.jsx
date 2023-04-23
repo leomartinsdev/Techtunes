@@ -87,19 +87,19 @@ export default class Search extends Component {
               <div>
                 {albumsList.map((element) => (
                   <Link
-                    key={ element.artistName }
+                    key={ element.trackId }
                     to={ `/album/${element.collectionId}` }
                     data-testid={ `link-to-album-${element.collectionId}` }
                   >
                     <img
-                      key={ element.artistName }
+                      key={ element.trackId }
                       src={ element.artworkUrl100 }
                       alt={ element.artistName }
                     />
-                    <p key={ element.artistName }>
+                    <p key={ element.trackId }>
                       { element.collectionName }
                     </p>
-                    <p key={ element.artistName }>
+                    <p key={ element.trackId }>
                       { element.artistName }
                     </p>
                   </Link>))}
