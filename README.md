@@ -7,4 +7,4 @@ Para isso tudo funcionar, utilizei a API do iTunes (Apple).
 [Techtunes](https://techtunes.vercel.app/)
 
 ## 👨‍💻 Tecnologias usadas:
-Feito utilizando JavaScript, JSX, React, Componentes de Classe e HTML5.
+Feito utilizando JavaScript, JSX, React, Componentes de Classe e HTML5. Não foram utilizados nem Redux e nem Context API, tendo em vista que o objetivo era praticar a passagem de props entre componentes.
