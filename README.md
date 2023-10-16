@@ -1,10 +1,10 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+# Techtunes 🎵
+Aplicativo de player de música. Nele, você pode logar, pesquisar por artistas, ver seus albúms e suas músicas (e favorita-las). Além disso, você pode tocar um preview de 29 segundos da música.
+Para isso tudo funcionar, utilizei a API do iTunes (Apple). 
+<br>
+
+## 💻 Acesse esse projeto:
+[Techtunes](https://techtunes.vercel.app/)
+
+## 👨‍💻 Tecnologias usadas:
+Feito utilizando JavaScript, JSX, React, Componentes de Classe e HTML5.
