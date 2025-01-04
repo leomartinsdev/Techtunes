@@ -37,7 +37,7 @@ export default class Search extends Component {
     const artistVal = artistSearch.length >= 2;
 
     this.setState({
-      searchBtnDisabled: !(artistVal),
+      searchBtnDisabled: !artistVal,
     });
   };
 
@@ -46,14 +46,23 @@ export default class Search extends Component {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
-    this.setState({
-      [name]: value,
-    }, this.searchValidation);
+    this.setState(
+      {
+        [name]: value,
+      },
+      this.searchValidation
+    );
   };
 
   render() {
-    const { searchBtnDisabled, artistSearch, isLoading, artistResultView,
-      artistHeaderName, albumsList } = this.state;
+    const {
+      searchBtnDisabled,
+      artistSearch,
+      isLoading,
+      artistResultView,
+      artistHeaderName,
+      albumsList,
+    } = this.state;
     return (
       <div data-testid="page-search">
         <Header />
@@ -64,52 +73,44 @@ export default class Search extends Component {
             type="text"
             placeholder="Nome do Artista"
             data-testid="search-artist-input"
-            onChange={ this.onInputChange }
-            value={ artistSearch }
+            onChange={this.onInputChange}
+            value={artistSearch}
           />
           <button
             type="button"
-            onClick={ () => this.handleSearchBtn(artistSearch) }
-            disabled={ searchBtnDisabled }
+            onClick={() => this.handleSearchBtn(artistSearch)}
+            disabled={searchBtnDisabled}
             data-testid="search-artist-button"
           >
             Pesquisar
           </button>
         </form>
-        { artistResultView
-          && (
-            <>
-              <p>
-                Resultado de álbuns de:
-                {' '}
-                {artistHeaderName}
-              </p>
-              <div>
-                {albumsList.map((element) => (
-                  <Link
-                    key={ element.trackId }
-                    to={ `/album/${element.collectionId}` }
-                    data-testid={ `link-to-album-${element.collectionId}` }
-                  >
-                    <img
-                      key={ element.trackId }
-                      src={ element.artworkUrl100 }
-                      alt={ element.artistName }
-                    />
-                    <p key={ element.trackId }>
-                      { element.collectionName }
-                    </p>
-                    <p key={ element.trackId }>
-                      { element.artistName }
-                    </p>
-                  </Link>))}
-              </div>
-            </>
-          ) }
+        {artistResultView && (
+          <>
+            <p>Resultado de álbuns de: {artistHeaderName}</p>
+            <div>
+              {albumsList.map((element) => (
+                <Link
+                  key={element.trackId}
+                  to={`/album/${element.collectionId}`}
+                  data-testid={`link-to-album-${element.collectionId}`}
+                >
+                  <img
+                    key={element.trackId}
+                    src={element.artworkUrl100}
+                    alt={element.artistName}
+                  />
+                  <p key={element.trackId}>{element.collectionName}</p>
+                  <p key={element.trackId}>{element.artistName}</p>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
 
-        { artistResultView && albumsList.length === 0 && 'Nenhum álbum foi encontrado' }
+        {artistResultView && albumsList.length === 0 && 'Nenhum álbum foi encontrado'}
 
-        { isLoading && <Loading /> }
+        {isLoading && <Loading />}
       </div>
     );
   }

@@ -26,7 +26,7 @@ const searchAlbumsAPI = async (artist) => {
       artworkUrl100,
       releaseDate,
       trackCount,
-    }),
+    })
   );
   return response;
 };

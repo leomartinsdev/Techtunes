@@ -38,7 +38,7 @@ class App extends React.Component {
     const nameVal = userName.length >= minNameReq;
 
     this.setState({
-      loginBtnDisabled: !(nameVal),
+      loginBtnDisabled: !nameVal,
     });
   };
 
@@ -52,9 +52,12 @@ class App extends React.Component {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
-    this.setState({
-      [name]: value,
-    }, this.validations);
+    this.setState(
+      {
+        [name]: value,
+      },
+      this.validations
+    );
   };
 
   render() {
@@ -63,42 +66,34 @@ class App extends React.Component {
       <main>
         <Switch>
           <Route exact path="/">
-            {logado ? <Redirect to="/search" /> : (
+            {logado ? (
+              <Redirect to="/search" />
+            ) : (
               <Route
                 exact
                 path="/"
-                render={
-                  (props) => (
-                    <Login
-                      { ...props }
-                      userName={ userName }
-                      loginBtnDisabled={ loginBtnDisabled }
-                      onInputChange={ this.onInputChange }
-                      handleEnterButton={ this.handleEnterButton }
-                      carregando={ carregando }
-                      logado={ logado }
-                    />)
-                }
+                render={(props) => (
+                  <Login
+                    {...props}
+                    userName={userName}
+                    loginBtnDisabled={loginBtnDisabled}
+                    onInputChange={this.onInputChange}
+                    handleEnterButton={this.handleEnterButton}
+                    carregando={carregando}
+                    logado={logado}
+                  />
+                )}
               />
             )}
           </Route>
 
-          <Route
-            exact
-            path="/search"
-            render={
-              (props) => (
-                <Search
-                  { ...props }
-                />)
-            }
-          />
+          <Route exact path="/search" render={(props) => <Search {...props} />} />
 
-          <Route exact path="/album/:id" component={ Album } />
-          <Route exact path="/favorites" component={ Favorites } />
-          <Route exact path="/profile" component={ Profile } />
-          <Route exact path="/profile/edit" component={ ProfileEdit } />
-          <Route path="*" component={ NotFound } />
+          <Route exact path="/album/:id" component={Album} />
+          <Route exact path="/favorites" component={Favorites} />
+          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/profile/edit" component={ProfileEdit} />
+          <Route path="*" component={NotFound} />
         </Switch>
       </main>
     );

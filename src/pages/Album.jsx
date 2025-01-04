@@ -48,24 +48,25 @@ export default class Album extends Component {
     const { songsList, artistName, albumName, loading, favSongs } = this.state;
     return (
       <div data-testid="page-album">
-        { loading ? (
+        {loading ? (
           <Loading />
         ) : (
           <>
             <Header />
-            <span data-testid="artist-name">{ artistName }</span>
+            <span data-testid="artist-name">{artistName}</span>
             <br />
-            <span data-testid="album-name">{ albumName }</span>
-            {songsList && songsList.map((song) => (
-              <MusicCard
-                key={ song.trackId }
-                trackName={ song.trackName }
-                previewUrl={ song.previewUrl }
-                trackId={ song.trackId }
-                allSongInfo={ song }
-                favSongs={ favSongs }
-              />
-            ))}
+            <span data-testid="album-name">{albumName}</span>
+            {songsList &&
+              songsList.map((song) => (
+                <MusicCard
+                  key={song.trackId}
+                  trackName={song.trackName}
+                  previewUrl={song.previewUrl}
+                  trackId={song.trackId}
+                  allSongInfo={song}
+                  favSongs={favSongs}
+                />
+              ))}
           </>
         )}
       </div>

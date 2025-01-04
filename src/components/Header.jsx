@@ -28,18 +28,26 @@ export default class Header extends Component {
     const { headerloading, recoveredName } = this.state;
     return (
       <header data-testid="header-component">
-        { headerloading
-          ? <Loading />
-          : <p data-testid="header-user-name">{ recoveredName }</p> }
-        <Link to="/search" data-testid="link-to-search">Search</Link>
-        <Link to="/favorites" data-testid="link-to-favorites">Favorites</Link>
-        <Link to="/profile" data-testid="link-to-profile">Perfil</Link>
+        {headerloading ? (
+          <Loading />
+        ) : (
+          <p data-testid="header-user-name">{recoveredName}</p>
+        )}
+        <Link to="/search" data-testid="link-to-search">
+          Search
+        </Link>
+        <Link to="/favorites" data-testid="link-to-favorites">
+          Favorites
+        </Link>
+        <Link to="/profile" data-testid="link-to-profile">
+          Perfil
+        </Link>
       </header>
     );
   }
 }
 
-Header.propTypes = ({
+Header.propTypes = {
   carregando: PropTypes.bool,
   recUserName: PropTypes.func,
-}).isRequired;
+}.isRequired;
